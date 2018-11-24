@@ -18,6 +18,8 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 const { loaders } = require('./webpack.base');
+const magicImporter = require('node-sass-magic-importer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
