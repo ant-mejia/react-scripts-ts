@@ -5,6 +5,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
+const magicImporter = require('node-sass-magic-importer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 const isProduction = process.env.NODE_ENV === 'production';
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 
@@ -139,14 +142,19 @@ module.exports.loaders = [
       }
     ]
   },
-  // Process Css
-  getStyleLoader(),
-  // Process Sass
-  getStyleLoader({ sass: true }),
-  // Process Css Modules
-  getStyleLoader({ modules: true }),
-  // Process Sass Modules
-  getStyleLoader({ sass: true, modules: true }),
+  {
+    test: /\.scss$/,
+    use: ExtractTextPlugin.extract([
+      {
+        loader: 'css-loader'
+      }, {
+        loader: 'sass-loader',
+        options: {
+          importer: magicImporter()
+        }
+      }
+    ])
+  },
   {
     test: /\.svg$/,
     exclude: /[\\/]node_modules[\\/]/,
